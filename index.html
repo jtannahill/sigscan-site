@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SigScan. See the signals around you.</title>
+<meta name="description" content="SigScan is an iOS app that shows every Bluetooth, WiFi, NFC, and cellular signal around you in augmented reality. Find unknown trackers. Everything stays on your device.">
+<meta property="og:title" content="SigScan. See the signals around you.">
+<meta property="og:description" content="Point your phone and see every wireless signal around you in AR. Find unknown trackers. On-device, private by design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:      #050810;
+    --panel:    #0B1326;
+    --line:     #16223F;
+    --cyan:     #00CDEE;
+    --green:    #35E07C;
+    --amber:    #E0A435;
+    --text:     #C7D3E8;
+    --dim:      #5E6E8C;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+  a { color: var(--cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  #radar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+  }
+  .hero-inner { position: relative; z-index: 2; padding: 96px 0; }
+  .kicker {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: clamp(40px, 7vw, 76px);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: #EDF3FF;
+    max-width: 13ch;
+  }
+  h1 .ghost { color: var(--dim); }
+  .hero p.sub {
+    margin-top: 24px;
+    max-width: 46ch;
+    font-size: 18px;
+    color: var(--text);
+  }
+  .cta-row { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 14px 28px;
+    border: 1px solid var(--cyan);
+    color: var(--ink);
+    background: var(--cyan);
+    border-radius: 4px;
+  }
+  .btn:hover { background: #33DBFF; border-color: #33DBFF; text-decoration: none; }
+  .btn.ghost-btn { background: transparent; color: var(--cyan); }
+  .btn.ghost-btn:hover { background: rgba(0, 205, 238, 0.08); }
+  .status-note {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .status-note .dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--amber);
+    margin-right: 7px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.3; } }
+
+  /* ── Scan log features ── */
+  .section { padding: 96px 0; border-bottom: 1px solid var(--line); }
+  .section-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 48px;
+  }
+  .section-label b { color: var(--green); font-weight: 500; }
+
+  .logrow {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 28px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+  .logrow:last-child { border-bottom: 1px solid var(--line); }
+  .logmeta {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--dim);
+    white-space: nowrap;
+  }
+  .logmeta .sig { color: var(--green); }
+  .logrow h3 {
+    font-size: 21px;
+    font-weight: 500;
+    color: #EDF3FF;
+    margin-bottom: 8px;
+  }
+  .logrow p { max-width: 62ch; color: var(--text); }
+  .logrow p code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85em;
+    color: var(--cyan);
+  }
+
+  /* ── Privacy transmission report ── */
+  .report {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 40px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 14px;
+    line-height: 2.1;
+  }
+  .report .rline { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed var(--line); }
+  .report .rline:last-child { border-bottom: none; }
+  .report .val { color: var(--green); text-align: right; }
+  .report .val.warn { color: var(--amber); }
+  .privacy-copy { margin-top: 32px; max-width: 60ch; }
+  .privacy-copy a { color: var(--cyan); }
+
+  /* ── Footer ── */
+  footer { padding: 56px 0; }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--dim);
+  }
+  footer nav { display: flex; gap: 24px; flex-wrap: wrap; }
+
+  @media (max-width: 640px) {
+    .logrow { grid-template-columns: 1fr; gap: 8px; }
+    .logmeta br { display: none; }
+    .logmeta { white-space: normal; }
+    .report { padding: 24px; font-size: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .status-note .dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="radar" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <p class="kicker">SigScan for iPhone</p>
+    <h1>The air is full of signals.<br><span class="ghost">Now you can see them.</span></h1>
+    <p class="sub">Point your phone around a room and every Bluetooth device appears as a
+    floating bubble in augmented reality. Find unknown trackers, identify devices,
+    and map your wireless surroundings. Everything stays on your device.</p>
+    <div class="cta-row">
+      <a class="btn" href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Read the technical writeup</a>
+      <span class="status-note"><span class="dot"></span>In App Store review, August 2026</span>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="features">
+  <div class="wrap">
+    <p class="section-label">Scan log <b>// 6 events</b></p>
+
+    <div class="logrow">
+      <div class="logmeta">BLE<br><span class="sig">RSSI -52</span><br>2.1 m</div>
+      <div>
+        <h3>Every Bluetooth device, identified</h3>
+        <p>Name, manufacturer, device class, and path-loss estimated distance for phones,
+        wearables, headphones, trackers, and smart home gear. A fingerprint database of
+        50+ vendors runs entirely on your phone.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">AR<br><span class="sig">LiDAR</span><br>anchored</div>
+      <div>
+        <h3>Bubbles in real space</h3>
+        <p>LiDAR mesh occlusion hides bubbles behind real walls. RSSI beam-forming and
+        trilateration converge on each device's true position as you move. Off-screen
+        devices become compass arrows at the edge of the frame.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">INTEL<br><span class="sig">on-device</span><br>0 ms cloud</div>
+      <div>
+        <h3>Find what should not be there</h3>
+        <p>Risk flags surface known tracker models, unnamed devices broadcasting at high
+        power, and hardware that moves with you. If a tracker is following you, SigScan
+        helps you find it.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">NFC<br><span class="sig">tap</span><br>decoded</div>
+      <div>
+        <h3>Tags, decoded on contact</h3>
+        <p>Hold your phone against an NFC tag and read what is on it: ISO 7816, ISO 15693,
+        MIFARE, and FeliCa, with NDEF records parsed in place.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">LOG<br><span class="sig">SwiftData</span><br>mapped</div>
+      <div>
+        <h3>Your history, on a map</h3>
+        <p>Every scan is stamped with where it happened and stored on your phone. Review
+        sessions on a map, see which devices appeared where, export CSV when you want it.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">AI<br><span class="sig">Ask AI</span><br>plain English</div>
+      <div>
+        <h3>Ask questions about your airspace</h3>
+        <p>The built-in assistant answers questions like <code>what is the strongest unknown
+        device near me</code> by combining on-device fingerprints with AI reasoning.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="privacy">
+  <div class="wrap">
+    <p class="section-label">Transmission report</p>
+    <div class="report" role="table" aria-label="What SigScan transmits">
+      <div class="rline"><span>Scan data uploaded</span><span class="val">NONE</span></div>
+      <div class="rline"><span>Location transmitted</span><span class="val">NONE</span></div>
+      <div class="rline"><span>Accounts required</span><span class="val">NONE</span></div>
+      <div class="rline"><span>Ads and analytics SDKs</span><span class="val">NONE</span></div>
+      <div class="rline"><span>Ask AI queries</span><span class="val warn">TRANSIENT, NO IDENTIFIERS</span></div>
+    </div>
+    <p class="privacy-copy">The only thing SigScan ever sends anywhere is an Ask AI question
+    you type, with a short summary of scanned device names. No location, no identifiers, no
+    profile. If you never use the assistant, the app makes no network requests with your data
+    at all. Full details in the <a href="https://jamestannahill.com/sigscan/privacy">privacy
+    policy</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>SigScan by James Tannahill</span>
+    <nav>
+      <a href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Writeup</a>
+      <a href="https://jamestannahill.com/sigscan/privacy">Privacy</a>
+      <a href="https://jamestannahill.com/faqs/">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canvas = document.getElementById("radar");
+  var ctx = canvas.getContext("2d");
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var W, H, CX, CY, R;
+
+  var blips = [
+    { a: 0.6, r: 0.45, label: "AirPods Pro" },
+    { a: 1.9, r: 0.72, label: "Unknown tracker" },
+    { a: 2.7, r: 0.30, label: "Apple Watch" },
+    { a: 3.9, r: 0.62, label: "Tile" },
+    { a: 5.1, r: 0.84, label: "Smart TV" },
+    { a: 5.9, r: 0.52, label: "WHOOP" }
+  ];
+
+  function resize() {
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    CX = W * 0.78; CY = H * 0.5;
+    R = Math.max(W, H) * 0.55;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  var sweep = 0;
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.strokeStyle = "rgba(0, 205, 238, 0.10)";
+    ctx.lineWidth = 1;
+    for (var i = 1; i <= 4; i++) {
+      ctx.beginPath();
+      ctx.arc(CX, CY, (R * i) / 4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.moveTo(CX - R, CY); ctx.lineTo(CX + R, CY);
+    ctx.moveTo(CX, CY - R); ctx.lineTo(CX, CY + R);
+    ctx.stroke();
+
+    if (!reduce) {
+      var grad = ctx.createConicGradient(sweep, CX, CY);
+      grad.addColorStop(0, "rgba(0, 205, 238, 0.22)");
+      grad.addColorStop(0.12, "rgba(0, 205, 238, 0)");
+      grad.addColorStop(1, "rgba(0, 205, 238, 0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(CX, CY);
+      ctx.arc(CX, CY, R, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.font = "11px 'IBM Plex Mono', monospace";
+    blips.forEach(function (b) {
+      var x = CX + Math.cos(b.a) * R * b.r;
+      var y = CY + Math.sin(b.a) * R * b.r;
+      var d = reduce ? 0.6 : Math.abs((((b.a - sweep) % (Math.PI * 2)) + Math.PI * 3) % (Math.PI * 2) - Math.PI) / Math.PI;
+      var glow = reduce ? 0.55 : Math.max(0, 1 - d * 2.2);
+      ctx.fillStyle = "rgba(53, 224, 124, " + (0.25 + glow * 0.75) + ")";
+      ctx.beginPath();
+      ctx.arc(x, y, 3.5 + glow * 2, 0, Math.PI * 2);
+      ctx.fill();
+      if (glow > 0.25) {
+        ctx.fillStyle = "rgba(199, 211, 232, " + glow + ")";
+        ctx.fillText(b.label, x + 12, y + 4);
+      }
+    });
+
+    if (!reduce) {
+      sweep += 0.012;
+      requestAnimationFrame(frame);
+    }
+  }
+  frame();
+})();
+</script>
+
+</body>
+</html>
