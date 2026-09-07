@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SigScan. See the signals around you.</title>
-<meta name="description" content="SigScan is an iOS app that shows every Bluetooth, WiFi, NFC, and cellular signal around you in augmented reality. Find unknown trackers. Everything stays on your device.">
+<meta name="description" content="SigScan is an iOS app that shows every Bluetooth, Wi-Fi, NFC, HomeKit, and cellular signal around you in augmented reality. Find unknown trackers. Everything stays on your device.">
 <meta property="og:title" content="SigScan. See the signals around you.">
 <meta property="og:description" content="Point your phone and see every wireless signal around you in AR. Find unknown trackers. On-device, private by design.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -215,7 +215,7 @@
 
 <section class="section" id="features">
   <div class="wrap">
-    <p class="section-label">Scan log <b>// 6 events</b></p>
+    <p class="section-label">Scan log <b>// 8 events</b></p>
 
     <div class="logrow">
       <div class="logmeta">BLE<br><span class="sig">RSSI -52</span><br>2.1 m</div>
@@ -252,7 +252,28 @@
       <div>
         <h3>Tags, decoded on contact</h3>
         <p>Hold your phone against an NFC tag and read what is on it: ISO 7816, ISO 15693,
-        MIFARE, and FeliCa, with NDEF records parsed in place.</p>
+        and MIFARE, with NDEF records parsed in place. Travel documents are recognised
+        and reported as such, without touching the protected data behind them.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">WIFI<br><span class="sig">BSSID</span><br>resolved</div>
+      <div>
+        <h3>The network you are actually on</h3>
+        <p>SSID and BSSID, the access point's vendor resolved from its hardware address,
+        the encryption in use, signal strength, and whether the BSSID is randomised
+        rather than real hardware.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">HOME<br><span class="sig">HAP</span><br>enumerated</div>
+      <div>
+        <h3>Your smart home, itemised</h3>
+        <p>Every HomeKit accessory by room, with manufacturer, model, serial and firmware
+        version read from the accessory itself. Old firmware is where smart home
+        vulnerabilities live, and most people have never seen these numbers.</p>
       </div>
     </div>
 
