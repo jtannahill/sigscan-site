@@ -96,6 +96,9 @@
     border-radius: 4px;
   }
   .btn:hover { background: #33DBFF; border-color: #33DBFF; text-decoration: none; }
+  .app-store-badge { display: inline-block; line-height: 0; border-radius: 8px; }
+  .app-store-badge img { height: 50px; width: auto; display: block; }
+  .app-store-badge:hover { opacity: 0.85; }
   .btn.ghost-btn { background: transparent; color: var(--cyan); }
   .btn.ghost-btn:hover { background: rgba(0, 205, 238, 0.08); }
   .status-note {
@@ -207,7 +210,10 @@
     floating bubble in augmented reality. Find unknown trackers, identify devices,
     and map your wireless surroundings. Everything stays on your device.</p>
     <div class="cta-row">
-      <a class="btn" href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">Download on the App Store</a>
+      <a class="app-store-badge" href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">
+        <img src="app-store-badge.svg"
+             alt="Download on the App Store" width="150" height="50">
+      </a>
       <a class="btn ghost-btn" href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Read the technical writeup</a>
       <span class="status-note"><span class="dot"></span>Now available on the App Store</span>
     </div>
