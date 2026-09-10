@@ -157,21 +157,8 @@
     color: var(--cyan);
   }
 
-  /* ── Privacy transmission report ── */
-  .report {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 40px;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 14px;
-    line-height: 2.1;
-  }
-  .report .rline { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed var(--line); }
-  .report .rline:last-child { border-bottom: none; }
-  .report .val { color: var(--green); text-align: right; }
-  .report .val.warn { color: var(--amber); }
-  .privacy-copy { margin-top: 32px; max-width: 60ch; }
+  /* ── Privacy ── */
+  .privacy-copy { max-width: 60ch; }
   .privacy-copy a { color: var(--cyan); }
 
   /* ── Footer ── */
@@ -191,7 +178,6 @@
     .logrow { grid-template-columns: 1fr; gap: 8px; }
     .logmeta br { display: none; }
     .logmeta { white-space: normal; }
-    .report { padding: 24px; font-size: 12px; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -342,14 +328,7 @@
 
 <section class="section" id="privacy">
   <div class="wrap">
-    <p class="section-label">Transmission report</p>
-    <div class="report" role="table" aria-label="What SigScan transmits">
-      <div class="rline"><span>Scan data uploaded</span><span class="val">NONE</span></div>
-      <div class="rline"><span>Location transmitted</span><span class="val">NONE</span></div>
-      <div class="rline"><span>Accounts required</span><span class="val">NONE</span></div>
-      <div class="rline"><span>Ads and analytics SDKs</span><span class="val">NONE</span></div>
-      <div class="rline"><span>Ask AI queries</span><span class="val warn">TRANSIENT, NO IDENTIFIERS</span></div>
-    </div>
+    <p class="section-label">Privacy</p>
     <p class="privacy-copy">The only thing SigScan ever sends anywhere is an Ask AI question
     you type, with a short summary of scanned device names. No location, no identifiers, no
     profile. If you never use the assistant, the app makes no network requests with your data
