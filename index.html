@@ -222,16 +222,49 @@
 
 <section class="section" id="features">
   <div class="wrap">
-    <p class="section-label">Scan log <b>// 8 events</b></p>
+    <p class="section-label">Scan log <b>// 11 events</b></p>
 
     <div class="logrow">
       <div class="logmeta">BLE<br><span class="sig">RSSI -52</span><br>2.1 m</div>
       <div>
-        <h3>Every Bluetooth device, identified</h3>
-        <p>Name, manufacturer, device class, and path-loss estimated distance for phones,
-        wearables, headphones, trackers, and smart home gear. Vendors are resolved against
-        the official Bluetooth SIG company registry, with deeper fingerprints for the
-        hardware you are most likely to meet. All of it runs on your phone.</p>
+        <h3>Every manufacturer, not a shortlist</h3>
+        <p>The complete Bluetooth SIG company registry and the full IEEE hardware registry
+        ship with the app: 22,886 manufacturers and 44,967 identifiers, held on the phone
+        and never looked up over the network. Hardware other scanners leave as Unknown
+        gets a name.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">MODEL<br><span class="sig">FD3D / FE95</span><br>exact</div>
+      <div>
+        <h3>Down to the product, where the format allows</h3>
+        <p>Where a manufacturer publishes how it advertises, SigScan reads the product code
+        out of the packet: a SwitchBot Meter, a Xiaomi LYWSD03MMC, a Lock, a Blind Tilt.
+        156 products so far, with the tables generated from published data rather than
+        typed by hand.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">SENSE<br><span class="sig">22.5 C</span><br>45% RH</div>
+      <div>
+        <h3>Live readings, straight out of the air</h3>
+        <p>Sensors that broadcast their measurements are read as the packets pass:
+        temperature, humidity, battery, motion and contact state, from thermometers, leak
+        detectors and door sensors. Nothing is connected to and nothing is requested. These
+        devices are already announcing it to anyone listening.</p>
+      </div>
+    </div>
+
+    <div class="logrow">
+      <div class="logmeta">TRACE<br><span class="sig">brand</span><br>vs silicon</div>
+      <div>
+        <h3>The chip and the brand are different things</h3>
+        <p>Most devices are built on somebody else's radio, which is why scanners so often
+        report a sensor as an Espressif or a Nordic device. SigScan reports the chip maker
+        and the brand separately, shows the evidence each identification was built from,
+        and says what else it could have been.</p>
       </div>
     </div>
 
@@ -250,8 +283,9 @@
       <div>
         <h3>Find what should not be there</h3>
         <p>Risk flags surface known tracker models, unnamed devices broadcasting at high
-        power, and hardware that moves with you. If a tracker is following you, SigScan
-        helps you find it.</p>
+        power, and hardware that moves with you. Vendors on the FCC Covered List or
+        restricted under Section 889 are flagged wherever the registries name them,
+        subsidiaries included. If a tracker is following you, SigScan helps you find it.</p>
       </div>
     </div>
 
