@@ -250,7 +250,9 @@
         <p>Most devices are built on somebody else's radio, which is why scanners so often
         report a sensor as an Espressif or a Nordic device. SigScan reports the chip maker
         and the brand separately, shows the evidence each identification was built from,
-        and says what else it could have been.</p>
+        and says what else it could have been. Device class (phone, audio, camera, TV,
+        appliance and more) is read from the device itself first. Brands that make many
+        kinds of product are never guessed, so a Samsung TV is not called a phone.</p>
       </div>
     </div>
 
@@ -291,7 +293,8 @@
         <h3>The network you are actually on</h3>
         <p>SSID and BSSID, the access point's vendor resolved from its hardware address,
         the encryption in use, signal strength, and whether the BSSID is randomised
-        rather than real hardware.</p>
+        rather than real hardware. Only the joined network is profiled: iOS does not let
+        any app scan for other Wi-Fi networks in range.</p>
       </div>
     </div>
 
