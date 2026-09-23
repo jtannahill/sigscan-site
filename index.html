@@ -4,9 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SigScan. See the signals around you.</title>
-<meta name="description" content="SigScan is an iOS app that shows every Bluetooth, Wi-Fi, NFC, HomeKit, and cellular signal around you in augmented reality. Find unknown trackers. Everything stays on your device.">
+<meta name="description" content="SigScan for iPhone shows the Bluetooth devices around you in augmented reality, finds unknown trackers, reads NFC tags, profiles your Wi-Fi network and lists HomeKit accessories.">
+<link rel="canonical" href="https://jtannahill.github.io/sigscan-site/">
+<meta name="theme-color" content="#050810">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta property="og:title" content="SigScan. See the signals around you.">
-<meta property="og:description" content="Point your phone and see every wireless signal around you in AR. Find unknown trackers. On-device, private by design.">
+<meta property="og:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans stay on your device.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SigScan">
+<meta property="og:url" content="https://jtannahill.github.io/sigscan-site/">
+<meta property="og:image" content="https://jamestannahill.com/og-venture-sigscan.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SigScan. The air is full of signals. Now you can see them.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SigScan. See the signals around you.">
+<meta name="twitter:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans stay on your device.">
+<meta name="twitter:image" content="https://jamestannahill.com/og-venture-sigscan.png?v=2">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"SigScan: Signal Radar","operatingSystem":"iOS 17.0 or later","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://apps.apple.com/app/sigscan-signal-radar/id6806315838","author":{"@type":"Person","name":"James Tannahill"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -19,10 +34,11 @@
     --green:    #35E07C;
     --amber:    #E0A435;
     --text:     #C7D3E8;
-    --dim:      #5E6E8C;
+    --dim:      #7A8AA8;
+    --text-strong: #EDF3FF;
+    --cyan-hover:  #33DBFF;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
   body {
     background: var(--ink);
     color: var(--text);
@@ -33,7 +49,7 @@
   .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
 
   a { color: var(--cyan); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  @media (hover: hover) { a:hover { text-decoration: underline; } }
   a:focus-visible, button:focus-visible {
     outline: 2px solid var(--cyan);
     outline-offset: 3px;
@@ -46,6 +62,7 @@
   .hero {
     position: relative;
     min-height: 92vh;
+    min-height: 92svh;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -58,7 +75,7 @@
     height: 100%;
     opacity: 0.9;
   }
-  .hero-inner { position: relative; z-index: 2; padding: 96px 0; }
+  .hero-inner { position: relative; z-index: 2; width: 100%; padding-block: 96px; }
   .kicker {
     font-family: "IBM Plex Mono", monospace;
     font-size: 12px;
@@ -72,8 +89,9 @@
     font-weight: 700;
     line-height: 1.04;
     letter-spacing: -0.02em;
-    color: #EDF3FF;
+    color: var(--text-strong);
     max-width: 13ch;
+    text-wrap: balance;
   }
   h1 .ghost { color: var(--dim); }
   .hero p.sub {
@@ -81,6 +99,7 @@
     max-width: 46ch;
     font-size: 18px;
     color: var(--text);
+    text-wrap: pretty;
   }
   .cta-row { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
   .btn {
@@ -94,27 +113,17 @@
     color: var(--ink);
     background: var(--cyan);
     border-radius: 4px;
+    transition: background-color 150ms ease, border-color 150ms ease, transform 120ms ease-out;
   }
-  .btn:hover { background: #33DBFF; border-color: #33DBFF; text-decoration: none; }
-  .app-store-badge { display: inline-block; line-height: 0; border-radius: 8px; }
+  .btn:active, .app-store-badge:active { transform: scale(0.97); }
+  .app-store-badge { display: inline-block; line-height: 0; border-radius: 8px; transition: opacity 150ms ease, transform 120ms ease-out; }
   .app-store-badge img { height: 50px; width: auto; display: block; }
-  .app-store-badge:hover { opacity: 0.85; }
   .btn.ghost-btn { background: transparent; color: var(--cyan); }
-  .btn.ghost-btn:hover { background: rgba(0, 205, 238, 0.08); }
-  .status-note {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
-    color: var(--dim);
+  @media (hover: hover) {
+    .btn:hover { background: var(--cyan-hover); border-color: var(--cyan-hover); text-decoration: none; }
+    .app-store-badge:hover { opacity: 0.85; }
+    .btn.ghost-btn:hover { background: rgba(0, 205, 238, 0.08); }
   }
-  .status-note .dot {
-    display: inline-block;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--amber);
-    margin-right: 7px;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 50% { opacity: 0.3; } }
 
   /* ── Scan log features ── */
   .section { padding: 96px 0; border-bottom: 1px solid var(--line); }
@@ -123,6 +132,7 @@
     font-size: 12px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
+    font-weight: 400;
     color: var(--dim);
     margin-bottom: 48px;
   }
@@ -142,15 +152,17 @@
     line-height: 1.9;
     color: var(--dim);
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
   .logmeta .sig { color: var(--green); }
   .logrow h3 {
     font-size: 21px;
     font-weight: 500;
-    color: #EDF3FF;
+    color: var(--text-strong);
     margin-bottom: 8px;
+    text-wrap: balance;
   }
-  .logrow p { max-width: 62ch; color: var(--text); }
+  .logrow p { max-width: 62ch; color: var(--text); text-wrap: pretty; }
   .logrow p code {
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.85em;
@@ -158,8 +170,8 @@
   }
 
   /* ── Privacy ── */
-  .privacy-copy { max-width: 60ch; }
-  .privacy-copy a { color: var(--cyan); }
+  .privacy-copy { max-width: 60ch; text-wrap: pretty; }
+  .privacy-copy a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
 
   /* ── Footer ── */
   footer { padding: 56px 0; }
@@ -179,10 +191,6 @@
     .logmeta br { display: none; }
     .logmeta { white-space: normal; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .status-note .dot { animation: none; }
-  }
 </style>
 </head>
 <body>
@@ -194,21 +202,21 @@
     <h1>The air is full of signals.<br><span class="ghost">Now you can see them.</span></h1>
     <p class="sub">Point your phone around a room and every Bluetooth device appears as a
     floating bubble in augmented reality. Find unknown trackers, identify devices,
-    and map your wireless surroundings. Everything stays on your device.</p>
+    and map your wireless surroundings. Scans stay on your device.</p>
     <div class="cta-row">
       <a class="app-store-badge" href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">
         <img src="app-store-badge.svg"
              alt="Download on the App Store" width="150" height="50">
       </a>
       <a class="btn ghost-btn" href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Read the technical writeup</a>
-      <span class="status-note"><span class="dot"></span>Now available on the App Store</span>
     </div>
   </div>
 </header>
 
+<main id="main">
 <section class="section" id="features">
   <div class="wrap">
-    <p class="section-label">Scan log <b>// 12 events</b></p>
+    <h2 class="section-label">Scan log <b>// 12 events</b></h2>
 
     <div class="logrow">
       <div class="logmeta">BLE<br><span class="sig">RSSI -52</span><br>2.1 m</div>
@@ -342,7 +350,7 @@
 
 <section class="section" id="privacy">
   <div class="wrap">
-    <p class="section-label">Privacy</p>
+    <h2 class="section-label">Privacy</h2>
     <p class="privacy-copy">The only thing SigScan ever sends anywhere is an Ask AI question
     you type, with a short summary of scanned device names. No location, no identifiers, no
     profile. If you never use the assistant, the app makes no network requests with your data
@@ -350,11 +358,12 @@
     policy</a>.</p>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="wrap">
     <a href="https://jamestannahill.com/ventures/sigscan">SigScan by James Tannahill</a>
-    <nav>
+    <nav aria-label="Footer">
       <a href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">App Store</a>
       <a href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Writeup</a>
       <a href="https://jamestannahill.com/sigscan/privacy">Privacy</a>
@@ -387,11 +396,11 @@
     CX = W * 0.78; CY = H * 0.5;
     R = Math.max(W, H) * 0.55;
   }
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize", function () { resize(); if (reduce) frame(); });
   resize();
 
-  var sweep = 0;
-  function frame() {
+  var sweep = 0, last = 0, running = false, inView = true;
+  function frame(t) {
     ctx.clearRect(0, 0, W, H);
 
     ctx.strokeStyle = "rgba(0, 205, 238, 0.10)";
@@ -428,18 +437,32 @@
       ctx.beginPath();
       ctx.arc(x, y, 3.5 + glow * 2, 0, Math.PI * 2);
       ctx.fill();
-      if (glow > 0.25) {
+      // Labels only where they cannot land on the hero copy or run off the edge.
+      if (glow > 0.25 && W >= 900 && x + 12 + ctx.measureText(b.label).width < W - 16) {
         ctx.fillStyle = "rgba(199, 211, 232, " + glow + ")";
         ctx.fillText(b.label, x + 12, y + 4);
       }
     });
 
     if (!reduce) {
-      sweep += 0.012;
-      requestAnimationFrame(frame);
+      // Frame-rate independent: the same speed at 60Hz and 120Hz.
+      var dt = last && t ? Math.min(t - last, 50) : 16.7;
+      last = t || 0;
+      sweep += 0.00072 * dt;
+      if (inView) requestAnimationFrame(frame);
+      else { running = false; last = 0; }
     }
   }
+  if (!reduce && "IntersectionObserver" in window) {
+    // Stop repainting the full-viewport canvas once the hero scrolls away.
+    new IntersectionObserver(function (e) {
+      inView = e[0].isIntersecting;
+      if (inView && !running) { running = true; requestAnimationFrame(frame); }
+    }).observe(canvas);
+  }
+  running = true;
   frame();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (reduce) frame(); });
 })();
 </script>
 

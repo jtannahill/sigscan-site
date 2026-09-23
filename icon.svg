@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+
+    <radialGradient id="bg" cx="50%" cy="42%" r="65%" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#0D1A35"/>
+      <stop offset="100%" stop-color="#050810"/>
+    </radialGradient>
+
+    <!-- sweep fill: radial fade from center -->
+    <radialGradient id="sweepFill" cx="512" cy="512" r="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#00DDFF" stop-opacity="0.0"/>
+      <stop offset="25%"  stop-color="#00DDFF" stop-opacity="0.18"/>
+      <stop offset="70%"  stop-color="#00CCFF" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#00AAEE" stop-opacity="0.06"/>
+    </radialGradient>
+
+    <!-- sweep tail: wide dim wedge -->
+    <radialGradient id="sweepTail" cx="512" cy="512" r="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#004466" stop-opacity="0.0"/>
+      <stop offset="100%" stop-color="#003355" stop-opacity="0.14"/>
+    </radialGradient>
+
+    <!-- blip glow -->
+    <filter id="blipGlow" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- subtle line glow -->
+    <filter id="lineGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- strong edge glow -->
+    <filter id="edgeGlow" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- center glow -->
+    <filter id="centerGlow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <clipPath id="clip">
+      <rect width="1024" height="1024" rx="230" ry="230"/>
+    </clipPath>
+
+  </defs>
+
+  <!-- ── BACKGROUND ── -->
+  <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+
+  <g clip-path="url(#clip)">
+
+    <!-- ── GRID ── -->
+    <g stroke="#0E1E3A" stroke-width="1" opacity="0.55">
+      <!-- cardinal lines -->
+      <line x1="512" y1="0"    x2="512" y2="1024"/>
+      <line x1="0"   y1="512"  x2="1024" y2="512"/>
+      <!-- diagonals -->
+      <line x1="0"   y1="0"    x2="1024" y2="1024" opacity="0.35"/>
+      <line x1="1024" y1="0"   x2="0"    y2="1024" opacity="0.35"/>
+    </g>
+
+    <!-- ── OUTER BOUNDARY RING ── -->
+    <circle cx="512" cy="512" r="448" fill="none" stroke="#0A3050" stroke-width="1.5" opacity="0.7"/>
+
+    <!-- ── CONCENTRIC RINGS ── -->
+    <!-- ring 1 – inner -->
+    <circle cx="512" cy="512" r="120" fill="none"
+            stroke="#00AACC" stroke-width="1.2" stroke-opacity="0.40"
+            stroke-dasharray="5 11"/>
+    <!-- ring 2 -->
+    <circle cx="512" cy="512" r="210" fill="none"
+            stroke="#0099BB" stroke-width="1.2" stroke-opacity="0.35"
+            stroke-dasharray="6 12"/>
+    <!-- ring 3 -->
+    <circle cx="512" cy="512" r="305" fill="none"
+            stroke="#0088AA" stroke-width="1.5" stroke-opacity="0.28"
+            stroke-dasharray="7 13"/>
+    <!-- ring 4 – outer -->
+    <circle cx="512" cy="512" r="398" fill="none"
+            stroke="#007799" stroke-width="1" stroke-opacity="0.22"
+            stroke-dasharray="10 16"/>
+
+    <!-- ── COMPASS TICK MARKS (outer ring) ── -->
+    <!-- N/S/E/W major ticks -->
+    <g stroke="#00AACC" stroke-width="2" stroke-opacity="0.45">
+      <line x1="512" y1="60"  x2="512" y2="88"/>   <!-- N -->
+      <line x1="512" y1="936" x2="512" y2="964"/>  <!-- S -->
+      <line x1="60"  y1="512" x2="88"  y2="512"/>  <!-- W -->
+      <line x1="936" y1="512" x2="964" y2="512"/>  <!-- E -->
+    </g>
+    <!-- diagonal minor ticks -->
+    <g stroke="#005577" stroke-width="1.5" stroke-opacity="0.35">
+      <!-- NE: 45° on r=448 → (512+317, 512-317)=(829,195), inward 22px -->
+      <line x1="814" y1="210" x2="798" y2="226"/>
+      <!-- SE: (829,829) -->
+      <line x1="814" y1="814" x2="798" y2="798"/>
+      <!-- SW: (195,829) -->
+      <line x1="210" y1="814" x2="226" y2="798"/>
+      <!-- NW: (195,195) -->
+      <line x1="210" y1="210" x2="226" y2="226"/>
+    </g>
+
+    <!-- ── RADAR SWEEP TAIL (wide, dim — 115° arc: 245° → 355°) ── -->
+    <!-- 245°: cos=-0.4226, sin=-0.9063 → r=420 → (512-177,512-381)=(335,131) -->
+    <!-- 355°: cos=0.9962, sin=-0.0872 → r=420 → (512+418,512-37)=(930,475) -->
+    <path d="M 512 512 L 335 131 A 420 420 0 0 1 930 475 Z"
+          fill="url(#sweepTail)" opacity="0.8"/>
+
+    <!-- ── RADAR SWEEP MAIN (60° arc: 295° → 355°) ── -->
+    <!-- 295°: cos=0.4226, sin=-0.9063 → r=420 → (512+177,512-381)=(689,131) -->
+    <path d="M 512 512 L 689 131 A 420 420 0 0 1 930 475 Z"
+          fill="url(#sweepFill)"/>
+
+    <!-- ── SWEEP LEADING EDGE (bright glowing line) ── -->
+    <!-- to 355° point: (930, 475) -->
+    <line x1="512" y1="512" x2="930" y2="475"
+          stroke="#00EEFF" stroke-width="2" stroke-opacity="0.9"
+          filter="url(#lineGlow)"/>
+    <!-- ultra-bright thin core -->
+    <line x1="512" y1="512" x2="930" y2="475"
+          stroke="#AAFFFF" stroke-width="1" stroke-opacity="0.6"/>
+
+    <!-- ── DEVICE BLIPS ── -->
+
+    <!-- BLIP A: right at sweep edge, r=210, 348° — very bright (just lit up) -->
+    <!-- cos(348°)=0.9781,sin(348°)=-0.2079 → (512+205,512-44)=(717,468) -->
+    <circle cx="717" cy="468" r="16" fill="#00FF99" opacity="0.90" filter="url(#blipGlow)"/>
+    <circle cx="717" cy="468" r="6"  fill="#CCFFEE" opacity="1.0"/>
+
+    <!-- BLIP B: just swept, r=120, 325° — bright -->
+    <!-- cos(325°)=0.8192,sin(325°)=-0.5736 → (512+98,512-69)=(610,443) -->
+    <circle cx="610" cy="443" r="12" fill="#00FF88" opacity="0.80" filter="url(#blipGlow)"/>
+    <circle cx="610" cy="443" r="5"  fill="#CCFFEE" opacity="1.0"/>
+
+    <!-- BLIP C: swept ~60° ago, r=305, 280° — medium -->
+    <!-- cos(280°)=0.1736,sin(280°)=-0.9848 → (512+53,512-300)=(565,212) -->
+    <circle cx="565" cy="212" r="11" fill="#00DD77" opacity="0.65" filter="url(#blipGlow)"/>
+    <circle cx="565" cy="212" r="4.5" fill="#AAFFCC" opacity="0.85"/>
+
+    <!-- BLIP D: swept ~120° ago, r=210, 220° — fading -->
+    <!-- cos(220°)=-0.766,sin(220°)=-0.6428 → (512-161,512-135)=(351,377) -->
+    <circle cx="351" cy="377" r="9" fill="#00BB66" opacity="0.48" filter="url(#blipGlow)"/>
+    <circle cx="351" cy="377" r="4" fill="#88FFBB" opacity="0.7"/>
+
+    <!-- BLIP E: swept ~180° ago, r=398, 150° — dim -->
+    <!-- cos(150°)=-0.866,sin(150°)=0.5 → (512-345,512+199)=(167,711) -->
+    <circle cx="167" cy="711" r="8" fill="#009955" opacity="0.38" filter="url(#blipGlow)"/>
+    <circle cx="167" cy="711" r="3" fill="#77DDAA" opacity="0.6"/>
+
+    <!-- BLIP F: swept long ago, r=120, 170° — very dim -->
+    <!-- cos(170°)=-0.9848,sin(170°)=0.1736 → (512-118,512+21)=(394,533) -->
+    <circle cx="394" cy="533" r="7" fill="#007744" opacity="0.30" filter="url(#blipGlow)"/>
+
+    <!-- ── CENTER CROSSHAIR ── -->
+
+    <!-- Center ambient glow -->
+    <circle cx="512" cy="512" r="55" fill="#00AADD" opacity="0.06" filter="url(#centerGlow)"/>
+
+    <!-- Outer crosshair ring -->
+    <circle cx="512" cy="512" r="32" fill="none"
+            stroke="#00CCEE" stroke-width="2" stroke-opacity="0.75"
+            filter="url(#lineGlow)"/>
+
+    <!-- Inner crosshair ring -->
+    <circle cx="512" cy="512" r="18" fill="none"
+            stroke="#00BBDD" stroke-width="1.2" stroke-opacity="0.55"/>
+
+    <!-- Crosshair ticks (gaps in the lines create the classic reticle look) -->
+    <g stroke="#00DDFF" stroke-width="2" stroke-opacity="0.85" stroke-linecap="round"
+       filter="url(#lineGlow)">
+      <line x1="512" y1="472" x2="512" y2="488"/>   <!-- N tick (inner) -->
+      <line x1="512" y1="452" x2="512" y2="462"/>   <!-- N tick (outer) -->
+      <line x1="512" y1="536" x2="512" y2="552"/>   <!-- S -->
+      <line x1="512" y1="562" x2="512" y2="572"/>
+      <line x1="472" y1="512" x2="488" y2="512"/>   <!-- W -->
+      <line x1="452" y1="512" x2="462" y2="512"/>
+      <line x1="536" y1="512" x2="552" y2="512"/>   <!-- E -->
+      <line x1="562" y1="512" x2="572" y2="512"/>
+    </g>
+
+    <!-- Center dot (bright) -->
+    <circle cx="512" cy="512" r="7" fill="#00EEFF" opacity="0.95" filter="url(#lineGlow)"/>
+    <circle cx="512" cy="512" r="3" fill="white"   opacity="1.0"/>
+
+    <!-- ── RF SIGNAL ARCS (upper-left, secondary mark) ── -->
+    <!-- Offset origin: (215, 230), arcs radiating toward lower-right (~135°) -->
+    <g transform="translate(215,230) rotate(45)" opacity="0.30"
+       fill="none" stroke-linecap="round">
+      <path d="M 0 0 Q 30 0 30 -30" stroke="#00AADD" stroke-width="3.5"/>
+      <path d="M -15 15 Q 40 15 40 -40" stroke="#0099CC" stroke-width="2.5" opacity="0.8"/>
+      <path d="M -28 28 Q 55 28 55 -55" stroke="#0088BB" stroke-width="2" opacity="0.6"/>
+      <circle cx="0" cy="0" r="5" fill="#00AADD" stroke="none" opacity="0.9"/>
+    </g>
+
+    <!-- ── INNER SCAN VIGNETTE (subtle dark edges to focus eye on center) ── -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="50%">
+      <stop offset="55%" stop-color="black" stop-opacity="0"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.55"/>
+    </radialGradient>
+    <rect width="1024" height="1024" fill="url(#vignette)"/>
+
+  </g><!-- /clip -->
+
+  <!-- ── OUTER BORDER RING ── -->
+  <rect width="1024" height="1024" rx="230"
+        fill="none" stroke="#1A3A5C" stroke-width="2" opacity="0.5"/>
+
+</svg>
