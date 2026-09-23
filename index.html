@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SigScan. See the signals around you.</title>
 <meta name="description" content="SigScan for iPhone shows nearby Bluetooth devices in augmented reality, finds unknown trackers, reads NFC tags, and details your Wi-Fi, cellular and HomeKit connections.">
+<meta name="apple-itunes-app" content="app-id=6806315838">
 <link rel="canonical" href="https://jtannahill.github.io/sigscan-site/">
 <meta name="theme-color" content="#050810">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -21,12 +22,14 @@
 <meta name="twitter:title" content="SigScan. See the signals around you.">
 <meta name="twitter:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans stay on your device.">
 <meta name="twitter:image" content="https://jamestannahill.com/og-venture-sigscan.png?v=2">
+<meta name="twitter:image:alt" content="SigScan. The air is full of signals. Now you can see them.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"SigScan: Signal Radar","operatingSystem":"iOS 17.0 or later","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://apps.apple.com/app/sigscan-signal-radar/id6806315838","author":{"@type":"Person","name":"James Tannahill"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
+    color-scheme: dark;
     --ink:      #050810;
     --line:     #16223F;
     --cyan:     #00CDEE;
@@ -43,6 +46,7 @@
     font-family: "Space Grotesk", system-ui, sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
 
@@ -51,8 +55,8 @@
   a:focus-visible, button:focus-visible {
     outline: 2px solid var(--cyan);
     outline-offset: 3px;
-    border-radius: 2px;
   }
+  a:not(.btn):not(.app-store-badge):focus-visible { border-radius: 2px; }
 
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
 
@@ -91,7 +95,7 @@
     max-width: 13ch;
     text-wrap: balance;
   }
-  h1 .ghost { color: var(--dim); }
+  h1 .ghost { display: block; color: var(--dim); text-wrap: balance; }
   .hero p.sub {
     margin-top: 24px;
     max-width: 46ch;
@@ -106,6 +110,7 @@
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.04em;
+    line-height: 20px;
     padding: 14px 28px;
     border: 1px solid var(--cyan);
     color: var(--ink);
@@ -113,7 +118,8 @@
     border-radius: 4px;
     transition: background-color 150ms ease, border-color 150ms ease, transform 120ms ease-out;
   }
-  .btn:active, .app-store-badge:active { transform: scale(0.97); }
+  .btn, .app-store-badge, .radar-toggle { -webkit-tap-highlight-color: transparent; }
+  .btn:active, .app-store-badge:active, .radar-toggle:active { transform: scale(0.97); }
   .app-store-badge { display: inline-block; line-height: 0; border-radius: 8px; transition: opacity 150ms ease, transform 120ms ease-out; }
   .app-store-badge img { height: 50px; width: auto; display: block; }
   .btn.ghost-btn { background: transparent; color: var(--cyan); }
@@ -126,9 +132,9 @@
 .radar-toggle {
     position: absolute; right: 24px; bottom: 20px; z-index: 3;
     font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.04em;
-    color: var(--dim); background: transparent; border: 1px solid var(--line);
-    border-radius: 4px; padding: 8px 12px; min-height: 36px; cursor: pointer;
-    transition: color 150ms ease, border-color 150ms ease;
+    color: var(--dim); background: var(--ink); border: 1px solid var(--dim);
+    border-radius: 4px; padding: 8px 12px; min-height: 44px; min-width: 16ch; cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease, transform 120ms ease-out;
   }
   @media (hover: hover) { .radar-toggle:hover { color: var(--cyan); border-color: var(--cyan); } }
 
@@ -165,6 +171,7 @@
   .logrow h3 {
     font-size: 21px;
     font-weight: 500;
+    line-height: 1.25;
     color: var(--text-strong);
     margin-bottom: 8px;
     text-wrap: balance;
@@ -196,18 +203,19 @@
   @media (max-width: 640px) {
     .logrow { grid-template-columns: 1fr; gap: 8px; }
     .logmeta br { display: none; }
-    .logmeta { white-space: normal; }
+    .logmeta { white-space: normal; display: flex; flex-wrap: wrap; column-gap: 1.5ch; }
+    .btn { padding: 14px 16px; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<header class="hero">
+<main id="main">
+<section class="hero">
   <canvas id="radar" aria-hidden="true"></canvas>
-  <button class="radar-toggle" id="radar-toggle" type="button" aria-pressed="false" hidden>Pause radar</button>
   <div class="wrap hero-inner">
     <p class="kicker">SigScan for iPhone</p>
-    <h1>The air is full of signals.<br><span class="ghost">Now you can see them.</span></h1>
+    <h1>The air is full of signals. <span class="ghost">Now you can see them.</span></h1>
     <p class="sub">Point your phone around a room and every Bluetooth device appears as a
     floating bubble in augmented reality. Find unknown trackers, identify devices,
     and map your wireless surroundings. Scans stay on your device.</p>
@@ -219,12 +227,12 @@
       <a class="btn ghost-btn" href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Read the technical writeup</a>
     </div>
   </div>
-</header>
+  <button class="radar-toggle" id="radar-toggle" type="button" hidden>Pause radar</button>
+</section>
 
-<main id="main">
 <section class="section" id="features">
   <div class="wrap">
-    <h2 class="section-label">Scan log <b>// 12 events</b></h2>
+    <h2 class="section-label">Scan log <b><span aria-hidden="true">// </span>12 events</b></h2>
 
     <div class="logrow">
       <div class="logmeta">BLE<br><span class="sig">RSSI -52</span><br>2.1 m</div>
@@ -243,13 +251,13 @@
         <h3>Down to the product, where the format allows</h3>
         <p>Where a manufacturer publishes how it advertises, SigScan reads the product code
         out of the packet: a SwitchBot Meter, a Xiaomi LYWSD03MMC, a Lock, a Blind Tilt.
-        156 products so far, with the tables generated from published data rather than
+        126 products so far, with the tables generated from published data rather than
         typed by hand.</p>
       </div>
     </div>
 
     <div class="logrow">
-      <div class="logmeta">SENSE<br><span class="sig">22.5 C</span><br>45% RH</div>
+      <div class="logmeta">SENSE<br><span class="sig">22.5 °C</span><br>45% RH</div>
       <div>
         <h3>Live readings, straight out of the air</h3>
         <p>Sensors that broadcast their measurements are read as the packets pass:
@@ -263,7 +271,7 @@
       <div class="logmeta">TRACE<br><span class="sig">brand</span><br>vs silicon</div>
       <div>
         <h3>The chip and the brand are different things</h3>
-        <p>Most devices are built on somebody else's radio, which is why scanners so often
+        <p>Most devices are built on somebody else’s radio, which is why scanners so often
         report a sensor as an Espressif or a Nordic device. SigScan reports the chip maker
         and the brand separately, shows the evidence each identification was built from,
         and says what else it could have been. Device class (phone, audio, camera, TV,
@@ -276,8 +284,8 @@
       <div class="logmeta">AR<br><span class="sig">LiDAR</span><br>anchored</div>
       <div>
         <h3>Bubbles in real space</h3>
-        <p>LiDAR mesh occlusion hides bubbles behind real walls. RSSI beam-forming and
-        trilateration converge on each device's true position as you move. Off-screen
+        <p>On iPhones with LiDAR, mesh occlusion hides bubbles behind real walls. RSSI beam-forming and
+        trilateration converge on each device’s true position as you move. Off-screen
         devices become compass arrows at the edge of the frame.</p>
       </div>
     </div>
@@ -307,7 +315,7 @@
       <div class="logmeta">WIFI<br><span class="sig">BSSID</span><br>resolved</div>
       <div>
         <h3>The network you are actually on</h3>
-        <p>SSID and BSSID, the access point's vendor resolved from its hardware address,
+        <p>SSID and BSSID, the access point’s vendor resolved from its hardware address,
         the encryption in use, signal strength, and whether the BSSID is randomised
         rather than real hardware. Only the joined network is profiled: iOS does not let
         any app scan for other Wi-Fi networks in range.</p>
@@ -375,14 +383,17 @@
       <a href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">App Store</a>
       <a href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Writeup</a>
       <a href="https://jamestannahill.com/sigscan/privacy">Privacy</a>
-      <a href="https://jamestannahill.com/faqs/">Contact</a>
+      <a href="https://jamestannahill.com/contact">Contact</a>
     </nav>
   </div>
 </footer>
 
 <script>
 (function () {
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var reduce = mq.matches;
+  // iOS Safari only applies :active to touches when a touchstart listener exists.
+  document.addEventListener("touchstart", function () {}, { passive: true });
   var canvas = document.getElementById("radar");
   var ctx = canvas.getContext("2d");
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -397,18 +408,28 @@
     { a: 5.9, r: 0.52, label: "WHOOP" }
   ];
 
+  // Returns true only when the backing store actually changed size, so the
+  // iOS URL bar collapsing does not clear and reallocate the canvas each time.
   function resize() {
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = W * dpr; canvas.height = H * dpr;
+    var w = canvas.clientWidth, h = canvas.clientHeight, d = Math.min(window.devicePixelRatio || 1, 2);
+    if (w === W && h === H && d === dpr) return false;
+    W = w; H = h; dpr = d;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     CX = W * 0.78; CY = H * 0.5;
     R = Math.max(W, H) * 0.55;
+    return true;
   }
-  window.addEventListener("resize", function () { resize(); if (reduce) frame(); });
+  // Redraw on any size change (window resize, font swap growing the hero), including while paused.
+  function onResize() { if (resize()) draw(); }
+  if ("ResizeObserver" in window) new ResizeObserver(onResize).observe(canvas);
+  window.addEventListener("resize", onResize);
+  W = H = -1;
   resize();
 
   var sweep = 0, last = 0, running = false, inView = true;
-  function frame(t) {
+  var TRAIL = Math.PI * 0.24;
+  function draw() {
     ctx.clearRect(0, 0, W, H);
 
     ctx.strokeStyle = "rgba(0, 205, 238, 0.10)";
@@ -424,14 +445,16 @@
     ctx.stroke();
 
     if (!reduce) {
+      // The beam turns clockwise: hard leading edge at sweep, trail fading behind it.
       var grad = ctx.createConicGradient(sweep, CX, CY);
-      grad.addColorStop(0, "rgba(0, 205, 238, 0.22)");
-      grad.addColorStop(0.12, "rgba(0, 205, 238, 0)");
-      grad.addColorStop(1, "rgba(0, 205, 238, 0)");
+      grad.addColorStop(0, "rgba(0, 205, 238, 0)");
+      grad.addColorStop(0.88, "rgba(0, 205, 238, 0)");
+      grad.addColorStop(1, "rgba(0, 205, 238, 0.22)");
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.moveTo(CX, CY);
-      ctx.arc(CX, CY, R, 0, Math.PI * 2);
+      ctx.arc(CX, CY, R, sweep - TRAIL, sweep);
+      ctx.closePath();
       ctx.fill();
     }
 
@@ -439,8 +462,9 @@
     blips.forEach(function (b) {
       var x = CX + Math.cos(b.a) * R * b.r;
       var y = CY + Math.sin(b.a) * R * b.r;
-      var d = reduce ? 0.6 : Math.abs((((b.a - sweep) % (Math.PI * 2)) + Math.PI * 3) % (Math.PI * 2) - Math.PI) / Math.PI;
-      var glow = reduce ? 0.55 : Math.max(0, 1 - d * 2.2);
+      // A blip flares as the beam passes it, then fades behind the beam.
+      var since = ((sweep - b.a) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+      var glow = reduce ? 0.55 : Math.max(0, 1 - since / (Math.PI * 0.9));
       ctx.fillStyle = "rgba(53, 224, 124, " + (0.25 + glow * 0.75) + ")";
       ctx.beginPath();
       ctx.arc(x, y, 3.5 + glow * 2, 0, Math.PI * 2);
@@ -451,38 +475,44 @@
         ctx.fillText(b.label, x + 12, y + 4);
       }
     });
-
-    if (!reduce) {
-      // Frame-rate independent: the same speed at 60Hz and 120Hz.
-      var dt = last && t ? Math.min(t - last, 50) : 16.7;
-      last = t || 0;
-      sweep += 0.00072 * dt;
-      if (inView && !paused) requestAnimationFrame(frame);
-      else { running = false; last = 0; }
-    }
   }
+  function frame(t) {
+    if (reduce) { running = false; draw(); return; }
+    // Frame-rate independent: the same speed at 60Hz and 120Hz.
+    var dt = last && t ? Math.min(t - last, 50) : 16.7;
+    last = t || 0;
+    sweep += 0.00072 * dt;
+    draw();
+    if (inView && !paused) requestAnimationFrame(frame);
+    else { running = false; last = 0; }
+  }
+  function start() { if (!reduce && inView && !paused && !running) { running = true; last = 0; requestAnimationFrame(frame); } }
   // WCAG 2.2.2: the sweep runs indefinitely, so give it a visible pause control.
   var toggle = document.getElementById("radar-toggle");
   var paused = false;
-  if (!reduce && toggle) {
-    toggle.hidden = false;
+  if (toggle) {
+    toggle.hidden = reduce;
     toggle.addEventListener("click", function () {
       paused = !paused;
-      toggle.setAttribute("aria-pressed", paused ? "true" : "false");
       toggle.textContent = paused ? "Play radar" : "Pause radar";
-      if (!paused && inView && !running) { running = true; last = 0; requestAnimationFrame(frame); }
+      start();
     });
   }
-  if (!reduce && "IntersectionObserver" in window) {
+  if ("IntersectionObserver" in window) {
     // Stop repainting the full-viewport canvas once the hero scrolls away.
     new IntersectionObserver(function (e) {
-      inView = e[0].isIntersecting;
-      if (inView && !running && !paused) { running = true; last = 0; requestAnimationFrame(frame); }
+      inView = e[e.length - 1].isIntersecting;
+      start();
     }).observe(canvas);
   }
-  running = true;
-  frame();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (reduce) frame(); });
+  // Follow a Reduce Motion change made while the page is open.
+  mq.addEventListener("change", function (e) {
+    reduce = e.matches;
+    if (toggle) toggle.hidden = reduce;
+    if (reduce) draw(); else start();
+  });
+  if (reduce) draw(); else start();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { resize(); draw(); });
 })();
 </script>
 
