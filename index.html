@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SigScan. See the signals around you.</title>
-<meta name="description" content="SigScan for iPhone shows the Bluetooth devices around you in augmented reality, finds unknown trackers, reads NFC tags, profiles your Wi-Fi network and lists HomeKit accessories.">
+<meta name="description" content="SigScan for iPhone shows nearby Bluetooth devices in augmented reality, finds unknown trackers, reads NFC tags, and details your Wi-Fi, cellular and HomeKit connections.">
 <link rel="canonical" href="https://jtannahill.github.io/sigscan-site/">
 <meta name="theme-color" content="#050810">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -28,11 +28,9 @@
 <style>
   :root {
     --ink:      #050810;
-    --panel:    #0B1326;
     --line:     #16223F;
     --cyan:     #00CDEE;
     --green:    #35E07C;
-    --amber:    #E0A435;
     --text:     #C7D3E8;
     --dim:      #7A8AA8;
     --text-strong: #EDF3FF;
@@ -125,6 +123,15 @@
     .btn.ghost-btn:hover { background: rgba(0, 205, 238, 0.08); }
   }
 
+.radar-toggle {
+    position: absolute; right: 24px; bottom: 20px; z-index: 3;
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.04em;
+    color: var(--dim); background: transparent; border: 1px solid var(--line);
+    border-radius: 4px; padding: 8px 12px; min-height: 36px; cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  @media (hover: hover) { .radar-toggle:hover { color: var(--cyan); border-color: var(--cyan); } }
+
   /* ── Scan log features ── */
   .section { padding: 96px 0; border-bottom: 1px solid var(--line); }
   .section-label {
@@ -197,6 +204,7 @@
 
 <header class="hero">
   <canvas id="radar" aria-hidden="true"></canvas>
+  <button class="radar-toggle" id="radar-toggle" type="button" aria-pressed="false" hidden>Pause radar</button>
   <div class="wrap hero-inner">
     <p class="kicker">SigScan for iPhone</p>
     <h1>The air is full of signals.<br><span class="ghost">Now you can see them.</span></h1>
@@ -449,15 +457,27 @@
       var dt = last && t ? Math.min(t - last, 50) : 16.7;
       last = t || 0;
       sweep += 0.00072 * dt;
-      if (inView) requestAnimationFrame(frame);
+      if (inView && !paused) requestAnimationFrame(frame);
       else { running = false; last = 0; }
     }
+  }
+  // WCAG 2.2.2: the sweep runs indefinitely, so give it a visible pause control.
+  var toggle = document.getElementById("radar-toggle");
+  var paused = false;
+  if (!reduce && toggle) {
+    toggle.hidden = false;
+    toggle.addEventListener("click", function () {
+      paused = !paused;
+      toggle.setAttribute("aria-pressed", paused ? "true" : "false");
+      toggle.textContent = paused ? "Play radar" : "Pause radar";
+      if (!paused && inView && !running) { running = true; last = 0; requestAnimationFrame(frame); }
+    });
   }
   if (!reduce && "IntersectionObserver" in window) {
     // Stop repainting the full-viewport canvas once the hero scrolls away.
     new IntersectionObserver(function (e) {
       inView = e[0].isIntersecting;
-      if (inView && !running) { running = true; requestAnimationFrame(frame); }
+      if (inView && !running && !paused) { running = true; last = 0; requestAnimationFrame(frame); }
     }).observe(canvas);
   }
   running = true;
