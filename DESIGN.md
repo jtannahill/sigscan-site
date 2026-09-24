@@ -55,16 +55,20 @@ Corners are nearly square. Buttons and the radar toggle use a small radius; noth
 
 ## Components
 
-- **Primary action**: the App Store badge. Hover dims its opacity; press scales it down slightly.
+- **Primary action**: the App Store badge, shown exactly as Apple supplies it: no hover, press or animation effect (Apple's badge guidelines). Only the keyboard focus ring is added.
 - **Secondary action**: the ghost button, `mono` text in `cyan` with a `cyan` outline and a transparent fill. A filled `cyan` button with `ink` text is the variant for a primary action that is not the App Store badge. Button line height is set so a button is exactly as tall as the App Store badge and the two sit level in the call-to-action row.
 - **Radar toggle**: the visible pause control for the sweep. It is opaque, with an `ink` fill and a `dim` outline and label, so it stays readable over the canvas, and it hovers to `cyan`. It meets the minimum touch-target size and keeps a fixed minimum width so the label swap does not change its size. Its state is carried by its label alone ("Pause radar" or "Play radar"), not by a pressed attribute.
 - **Scan log row**: the pattern for any new feature entry. Every row needs all three meta lines, with only the middle line in `green`.
 - **Section label**: an `h2` styled as a small `mono` label in `dim`, optionally ending in a `green` count.
 
-Buttons, the App Store badge and the radar toggle share the same press feedback, a slight scale-down, and suppress the default mobile tap highlight so that press state is the only touch feedback.
+Buttons and the radar toggle share the same press feedback, a slight scale-down (the App Store badge is exempt), and suppress the default mobile tap highlight so that press state is the only touch feedback.
 
 ## Motion
 
 Motion is limited to the radar sweep and short press and hover feedback on actions. The sweep turns clockwise with a hard leading edge and a trail that fades out behind it; only the trail wedge is filled. Blips flare as the beam passes over them and then fade until the next pass. The sweep runs at the same speed regardless of display refresh rate, stops repainting when the hero scrolls out of view, and can be paused with the radar toggle. The canvas redraws whenever it changes size, including while paused. Hover effects apply only on devices that support hover.
 
 When the viewer prefers reduced motion, the radar is drawn once as a static frame with no sweep and evenly lit blips, the radar toggle is hidden, and it redraws only on resize or font load. The page follows a change to that preference made while it is open, stopping or restarting the sweep without a reload. Any new animation must honor the same preference.
+
+## Apple guidelines
+
+Apple product names are never set in all caps (the kicker renders "SigScan for iPhone" in its own case). The footer carries Apple's trademark credit line. Type sizes are in rem so they follow the reader's text-size setting.
