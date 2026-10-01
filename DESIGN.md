@@ -11,6 +11,8 @@ colors:
   text: "#C7D3E8"
   text-strong: "#EDF3FF"
   dim: "#7A8AA8"
+  dim-contrast-more: "#A9B6CC"
+  line-contrast-more: "#33466E"
 typography:
   sans:
     fontFamily: Space Grotesk
@@ -35,9 +37,13 @@ Color carries meaning, so assign it by role:
 
 Text on a `cyan` fill uses `ink`.
 
+When the viewer asks for more contrast (`prefers-contrast: more`), two tokens are redefined on `:root` and nothing else changes color: `dim` becomes `#A9B6CC` (`dim-contrast-more`) and `line` becomes `#33466E` (`line-contrast-more`). In the same mode the radar canvas drops to 60% opacity, and the ghost button and radar toggle outlines thicken to 2px.
+
 The radar canvas draws with translucent versions of `cyan` (grid rings and sweep), `green` (blips) and `text` (blip labels). Keep canvas colors derived from these tokens so the illustration and the page read as one palette.
 
 ## Typography
+
+Both families are self-hosted as the Latin woff2 subsets from Google Fonts in `fonts/` (SIL Open Font License, see `fonts/LICENSE`), with `font-display: swap`; Space Grotesk is one variable file covering 300 to 700 and is preloaded because it sets the hero headline. The page loads no third-party fonts.
 
 `sans` (Space Grotesk) sets headings and body prose. `mono` (IBM Plex Mono) is the instrument voice: the hero kicker, section labels, scan log meta, buttons, the radar toggle, inline code, radar labels and the footer. Any text that reads as data, a label or a control uses `mono`; any sentence meant to be read as explanation uses `sans`.
 
@@ -60,6 +66,8 @@ Corners are nearly square. Buttons and the radar toggle use a small radius; noth
 - **Radar toggle**: the visible pause control for the sweep. It is opaque, with an `ink` fill and a `dim` outline and label, so it stays readable over the canvas, and it hovers to `cyan`. It meets the minimum touch-target size and keeps a fixed minimum width so the label swap does not change its size. Its state is carried by its label alone ("Pause radar" or "Play radar"), not by a pressed attribute.
 - **Scan log row**: the pattern for any new feature entry. Every row needs all three meta lines, with only the middle line in `green`.
 - **Section label**: an `h2` styled as a small `mono` label in `dim`, optionally ending in a `green` count.
+- **Footer links**: `mono` in `cyan`, padded to a 44px tall hit area with matching negative margins so the footer keeps its visual spacing.
+- **404 page**: `404.html` reuses the tokens, fonts and hero type on a plain `ink` page with no radar: a `dim` mono kicker ending in a `green` readout, one headline, a ghost button home and the App Store badge as supplied. GitHub Pages serves it for any missing path, so its URLs are absolute to `/sigscan-site/`.
 
 Buttons and the radar toggle share the same press feedback, a slight scale-down (the App Store badge is exempt), and suppress the default mobile tap highlight so that press state is the only touch feedback.
 

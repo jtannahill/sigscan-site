@@ -9,25 +9,29 @@
 <link rel="canonical" href="https://jtannahill.github.io/sigscan-site/">
 <meta name="theme-color" content="#050810">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:title" content="SigScan. See the signals around you.">
-<meta property="og:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans stay on your device.">
+<meta property="og:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans are stored on your phone.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SigScan">
 <meta property="og:url" content="https://jtannahill.github.io/sigscan-site/">
-<meta property="og:image" content="https://jamestannahill.com/og-venture-sigscan.png?v=2">
+<meta property="og:image" content="https://jtannahill.github.io/sigscan-site/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SigScan. The air is full of signals. Now you can see them.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SigScan. See the signals around you.">
-<meta name="twitter:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans stay on your device.">
-<meta name="twitter:image" content="https://jamestannahill.com/og-venture-sigscan.png?v=2">
+<meta name="twitter:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans are stored on your phone.">
+<meta name="twitter:image" content="https://jtannahill.github.io/sigscan-site/og.png">
 <meta name="twitter:image:alt" content="SigScan. The air is full of signals. Now you can see them.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"SigScan: Signal Radar","operatingSystem":"iOS 17.0 or later","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://apps.apple.com/app/sigscan-signal-radar/id6806315838","author":{"@type":"Person","name":"James Tannahill"}}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/space-grotesk-latin-var.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  /* Self-hosted Latin subsets (SIL OFL 1.1, see fonts/LICENSE). */
+  @font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("fonts/space-grotesk-latin-var.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/ibm-plex-mono-latin-400.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/ibm-plex-mono-latin-500.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/ibm-plex-mono-latin-600.woff2") format("woff2"); }
   :root {
     color-scheme: dark;
     --ink:      #050810;
@@ -44,7 +48,6 @@
     #radar { opacity: 0.6; }
     .btn.ghost-btn, .radar-toggle { border-width: 2px; }
   }
-  .legal { margin-top: 24px; font-size: 0.75rem; color: var(--dim); }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--ink);
@@ -135,7 +138,7 @@
 
 .radar-toggle {
     position: absolute; right: 24px; bottom: 20px; z-index: 3;
-    font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.04em;
+    font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; letter-spacing: 0.04em;
     color: var(--dim); background: var(--ink); border: 1px solid var(--dim);
     border-radius: 4px; padding: 8px 12px; min-height: 44px; min-width: 16ch; cursor: pointer;
     transition: color 150ms ease, border-color 150ms ease, transform 120ms ease-out;
@@ -199,10 +202,13 @@
     gap: 24px;
     flex-wrap: wrap;
     font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--dim);
   }
   footer nav { display: flex; gap: 24px; flex-wrap: wrap; }
+  /* 44px tall hit areas without changing the footer's visual rhythm. */
+  footer a { display: inline-block; line-height: 20px; padding-block: 12px; margin-block: -12px; }
+  .legal { margin-top: 24px; font-size: 0.75rem; color: var(--dim); }
 
   @media (max-width: 640px) {
     .logrow { grid-template-columns: 1fr; gap: 8px; }
@@ -220,9 +226,8 @@
   <div class="wrap hero-inner">
     <p class="kicker">SigScan for iPhone</p>
     <h1>The air is full of signals. <span class="ghost">Now you can see them.</span></h1>
-    <p class="sub">Point your phone around a room and every Bluetooth device appears as a
-    floating bubble in augmented reality. Find unknown trackers, identify devices,
-    and map your wireless surroundings. Scans stay on your device.</p>
+    <p class="sub">Every Bluetooth device around you, floating in augmented reality.
+    Find unknown trackers, identify devices, map your surroundings. Scans are stored on your phone.</p>
     <div class="cta-row">
       <a class="app-store-badge" href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">
         <img src="app-store-badge.svg"
@@ -236,10 +241,10 @@
 
 <section class="section" id="features">
   <div class="wrap">
-    <h2 class="section-label">Scan log <b><span aria-hidden="true">// </span>12 events</b></h2>
+    <h2 class="section-label">Scan log <b><span aria-hidden="true">// </span>11 events</b></h2>
 
     <div class="logrow">
-      <div class="logmeta">BLE<br><span class="sig">RSSI -52</span><br>2.1 m</div>
+      <div class="logmeta">BLE<br><span class="sig">RSSI &minus;52</span><br>2.1 m</div>
       <div>
         <h3>Every manufacturer, not a shortlist</h3>
         <p>The complete Bluetooth SIG company registry and the full IEEE hardware registry
@@ -278,9 +283,11 @@
         <p>Most devices are built on somebody else’s radio, which is why scanners so often
         report a sensor as an Espressif or a Nordic device. SigScan reports the chip maker
         and the brand separately, shows the evidence each identification was built from,
-        and says what else it could have been. Device class (phone, audio, camera, TV,
+        and says what else it could have been.
+        <!-- Restore when 1.4 ships: Device class (phone, audio, camera, TV,
         appliance and more) is read from the device itself first. Brands that make many
-        kinds of product are never guessed, so a Samsung TV is not called a phone.</p>
+        kinds of product are never guessed, so a Samsung TV is not called a phone. -->
+        </p>
       </div>
     </div>
 
@@ -295,7 +302,7 @@
     </div>
 
     <div class="logrow">
-      <div class="logmeta">INTEL<br><span class="sig">on-device</span><br>0 ms cloud</div>
+      <div class="logmeta">INTEL<br><span class="sig">on-device</span><br>no cloud</div>
       <div>
         <h3>Find what should not be there</h3>
         <p>Risk flags surface known tracker models, unnamed devices broadcasting at high
@@ -345,6 +352,7 @@
       </div>
     </div>
 
+    <!-- Restore when 1.4 ships (and set the section count back to 12 events):
     <div class="logrow">
       <div class="logmeta">SHARE<br><span class="sig">widget</span><br>your way</div>
       <div>
@@ -355,6 +363,7 @@
         in the tab bar, and pick Light, Dark or System appearance.</p>
       </div>
     </div>
+    -->
 
     <div class="logrow">
       <div class="logmeta">AI<br><span class="sig">Ask AI</span><br>plain English</div>
@@ -371,11 +380,16 @@
 <section class="section" id="privacy">
   <div class="wrap">
     <h2 class="section-label">Privacy</h2>
-    <p class="privacy-copy">The only thing SigScan ever sends anywhere is an Ask AI question
-    you type, with a short summary of scanned device names. No location, no identifiers, no
-    profile. If you never use the assistant, the app makes no network requests with your data
-    at all. Full details in the <a href="https://jamestannahill.com/sigscan/privacy">privacy
-    policy</a>.</p>
+    <p class="privacy-copy">Scans are stored on your phone. SigScan sends scan data only when
+    you ask a question in Ask AI: your question, a summary of up to 20 devices (make, model,
+    signal type, category, chip maker, average signal strength, times seen, risk flags,
+    evidence, whether it is moving and how many places it was logged) and your last 30 scan
+    events with device name, time and signal strength. In version 1.3, those events also
+    include the coordinates where they were logged. No account and no profile. If you never
+    use Ask AI, the app sends none of your data. Full details in the
+    <a href="https://jamestannahill.com/sigscan/privacy">privacy policy</a>.</p>
+    <!-- Restore when 1.4 ships: replace the sentence "In version 1.3, those events also
+    include the coordinates where they were logged." with "Never your location." -->
   </div>
 </section>
 </main>
@@ -385,7 +399,7 @@
     <a href="https://jamestannahill.com/ventures/sigscan">SigScan by James Tannahill</a>
     <nav aria-label="Footer">
       <a href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">App Store</a>
-      <a href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Writeup</a>
+      <a href="https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d">Technical writeup</a>
       <a href="https://jamestannahill.com/sigscan/privacy">Privacy</a>
       <a href="https://jamestannahill.com/contact">Contact</a>
     </nav>
@@ -458,9 +472,9 @@
     if (!reduce) {
       // The beam turns clockwise: hard leading edge at sweep, trail fading behind it.
       var grad = ctx.createConicGradient(sweep, CX, CY);
-      grad.addColorStop(0, "rgba(0, 205, 238, 0)");
-      grad.addColorStop(0.88, "rgba(0, 205, 238, 0)");
-      grad.addColorStop(1, "rgba(0, 205, 238, 0.22)");
+      grad.addColorStop(0, tok("--cyan", 0));
+      grad.addColorStop(0.88, tok("--cyan", 0));
+      grad.addColorStop(1, tok("--cyan", 0.22));
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.moveTo(CX, CY);

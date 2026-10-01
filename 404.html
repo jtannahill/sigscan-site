@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found. SigScan</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#050810">
+<!-- GitHub Pages serves this file for any missing path, so every URL is absolute to the site root. -->
+<link rel="icon" href="/sigscan-site/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/sigscan-site/apple-touch-icon.png">
+<link rel="preload" href="/sigscan-site/fonts/space-grotesk-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("/sigscan-site/fonts/space-grotesk-latin-var.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("/sigscan-site/fonts/ibm-plex-mono-latin-400.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("/sigscan-site/fonts/ibm-plex-mono-latin-500.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("/sigscan-site/fonts/ibm-plex-mono-latin-600.woff2") format("woff2"); }
+  :root {
+    color-scheme: dark;
+    --ink:      #050810;
+    --line:     #16223F;
+    --cyan:     #00CDEE;
+    --green:    #35E07C;
+    --text:     #C7D3E8;
+    --dim:      #7A8AA8;
+    --text-strong: #EDF3FF;
+    --cyan-hover:  #33DBFF;
+  }
+  @media (prefers-contrast: more) {
+    :root { --dim: #A9B6CC; --line: #33466E; }
+    .btn.ghost-btn { border-width: 2px; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+  a { color: var(--cyan); text-decoration: none; }
+  @media (hover: hover) { a:hover { text-decoration: underline; } }
+  a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+  a:not(.btn):not(.app-store-badge):focus-visible { border-radius: 2px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+  main { flex: 1; display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+  .inner { padding-block: 96px; }
+  .kicker {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--dim);
+    margin-bottom: 20px;
+    font-variant-numeric: tabular-nums;
+  }
+  .kicker b { color: var(--green); font-weight: 500; }
+  h1 {
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--text-strong);
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+  p.sub { margin-top: 24px; max-width: 46ch; font-size: 1.125rem; text-wrap: pretty; }
+  .cta-row { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 20px;
+    padding: 14px 28px;
+    border: 1px solid var(--cyan);
+    border-radius: 4px;
+    transition: background-color 150ms ease, border-color 150ms ease, transform 120ms ease-out;
+  }
+  .btn.ghost-btn { background: transparent; color: var(--cyan); }
+  .btn, .app-store-badge { -webkit-tap-highlight-color: transparent; }
+  .btn:active { transform: scale(0.97); }
+  @media (hover: hover) { .btn.ghost-btn:hover { background: rgba(0, 205, 238, 0.08); text-decoration: none; } }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:active { transform: none; } }
+  .app-store-badge { display: inline-block; line-height: 0; border-radius: 8px; }
+  .app-store-badge img { height: 50px; width: auto; display: block; }
+
+  footer { padding: 56px 0; }
+  .legal { font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--dim); }
+  @media (max-width: 640px) { .btn { padding: 14px 16px; text-align: center; } }
+</style>
+</head>
+<body>
+<main id="main">
+  <div class="wrap inner">
+    <p class="kicker">ERROR 404 <b><span aria-hidden="true">// </span>no signal</b></p>
+    <h1>Nothing on this frequency.</h1>
+    <p class="sub">The page you were looking for is not here. The scan log is one tap away.</p>
+    <div class="cta-row">
+      <a class="btn ghost-btn" href="/sigscan-site/">Back to SigScan</a>
+      <a class="app-store-badge" href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">
+        <img src="/sigscan-site/app-store-badge.svg" alt="Download on the App Store" width="150" height="50">
+      </a>
+    </div>
+  </div>
+</main>
+<footer>
+  <p class="wrap legal">Apple, the Apple logo and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc., registered in the U.S. and other countries.</p>
+</footer>
+</body>
+</html>
