@@ -12,7 +12,7 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:title" content="SigScan. See the signals around you.">
-<meta property="og:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans are stored on your phone.">
+<meta property="og:description" content="Point your phone and see the Bluetooth devices around you in AR. Find unknown trackers. Scans are stored on your phone.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SigScan">
 <meta property="og:url" content="https://jtannahill.github.io/sigscan-site/">
@@ -23,7 +23,7 @@
 <meta property="og:image:alt" content="SigScan. The air is full of signals. Now you can see them.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SigScan. See the signals around you.">
-<meta name="twitter:description" content="Point your phone and see every Bluetooth device around you in AR. Find unknown trackers. Scans are stored on your phone.">
+<meta name="twitter:description" content="Point your phone and see the Bluetooth devices around you in AR. Find unknown trackers. Scans are stored on your phone.">
 <meta name="twitter:image" content="https://jtannahill.github.io/sigscan-site/og.png">
 <meta name="twitter:image:alt" content="SigScan. The air is full of signals. Now you can see them.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"SigScan: Signal Radar","description":"SigScan for iPhone shows nearby Bluetooth devices in augmented reality, finds unknown trackers, reads NFC tags, and reads Wi-Fi, cellular and HomeKit details.","image":"https://jtannahill.github.io/sigscan-site/og.png","operatingSystem":"iOS 17.0 or later","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://apps.apple.com/app/sigscan-signal-radar/id6806315838","author":{"@type":"Person","name":"James Tannahill"}}</script>
@@ -198,7 +198,7 @@
 
   /* ── Privacy ── */
   .privacy-copy { max-width: 60ch; text-wrap: pretty; }
-  .privacy-copy a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+  .privacy-copy a, .logrow p a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
 
   /* ── Footer ── */
   footer { padding: 56px 0; }
@@ -232,7 +232,7 @@
   <div class="wrap hero-inner">
     <p class="kicker">SigScan for iPhone</p>
     <h1>The air is full of signals. <span class="ghost">Now you can see them.</span></h1>
-    <p class="sub">Every Bluetooth device around you, floating in augmented reality.
+    <p class="sub">The Bluetooth devices around you, floating in augmented reality.
     Find unknown trackers, identify devices, map your surroundings. Scans are stored on your phone.</p>
     <div class="cta-row">
       <a class="app-store-badge" href="https://apps.apple.com/app/sigscan-signal-radar/id6806315838">
@@ -301,7 +301,7 @@
       <div class="logmeta" aria-hidden="true">AR<br><span class="sig">LiDAR</span><br>anchored</div>
       <div>
         <h3>Bubbles in real space</h3>
-        <p>On iPhones with LiDAR, mesh occlusion hides bubbles behind real walls. RSSI beam-forming and
+        <p>On iPhones with LiDAR, mesh occlusion hides bubbles behind real walls. RSSI sampling and
         trilateration converge on each device’s true position as you move. Off-screen
         devices become compass arrows at the edge of the frame.</p>
       </div>
@@ -314,7 +314,7 @@
         <p>Risk flags surface known tracker models, unnamed devices broadcasting at high
         power, and hardware that moves with you. Vendors on the FCC Covered List or
         restricted under Section 889 are flagged wherever the registries name them,
-        subsidiaries included. If a tracker is following you, SigScan helps you find it.</p>
+        subsidiaries included. If you think a tracker is following you, SigScan can help you look for it.</p>
       </div>
     </div>
 
@@ -323,7 +323,7 @@
       <div>
         <h3>Tags, decoded on contact</h3>
         <p>Hold your phone against an NFC tag and read what is on it: ISO 7816, ISO 15693,
-        and MIFARE, with NDEF records parsed in place. Travel documents are recognised
+        and MIFARE, with NDEF records parsed in place. Travel documents are recognized
         and reported as such, without touching the protected data behind them.</p>
       </div>
     </div>
@@ -333,7 +333,7 @@
       <div>
         <h3>The network you are actually on</h3>
         <p>SSID and BSSID, the access point’s vendor resolved from its hardware address,
-        the encryption in use, signal strength, and whether the BSSID is randomised
+        the encryption in use, signal strength, and whether the BSSID is randomized
         rather than real hardware. Only the joined network is profiled: iOS does not let
         any app scan for other Wi-Fi networks in range.</p>
       </div>
@@ -342,7 +342,7 @@
     <div class="logrow">
       <div class="logmeta" aria-hidden="true">HOME<br><span class="sig">HAP</span><br>enumerated</div>
       <div>
-        <h3>Your smart home, itemised</h3>
+        <h3>Your smart home, itemized</h3>
         <p>Every HomeKit accessory by room, with manufacturer, model, serial and firmware
         version read from the accessory itself. Old firmware is where smart home
         vulnerabilities live, and most people have never seen these numbers.</p>
@@ -376,7 +376,7 @@
       <div>
         <h3>Ask questions about your airspace</h3>
         <p>The built-in assistant answers questions like <code>what is the strongest unknown
-        device near me</code> by combining on-device fingerprints with AI reasoning.</p>
+        device near me</code> using on-device fingerprints. Questions are sent through the developer&rsquo;s server to Anthropic&rsquo;s Claude; see <a href="#privacy">Privacy</a>.</p>
       </div>
     </div>
 
@@ -391,7 +391,7 @@
     signal type, category, chip maker, average signal strength, times seen, risk flags,
     evidence, whether it is moving and how many places it was logged) and your last 30 scan
     events with device name, time and signal strength. In version 1.3, those events also
-    include the coordinates where they were logged. No account and no profile. If you never
+    include the coordinates where they were logged. It goes through our server to Anthropic&rsquo;s Claude API, is processed to answer you, and is not stored. No account and no profile. If you never
     use Ask AI, the app sends none of your data. Full details in the
     <a href="https://jamestannahill.com/sigscan/privacy">privacy policy</a>.</p>
     <!-- Restore when 1.4 ships: replace the sentence "In version 1.3, those events also
