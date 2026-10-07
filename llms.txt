@@ -1,0 +1,30 @@
+# SigScan
+
+> SigScan (App Store name "SigScan: Signal Radar") is a free iPhone app by James Tannahill that shows nearby Bluetooth devices in augmented reality, helps find unknown trackers, reads NFC tags, and reads Wi-Fi, cellular and HomeKit details. Scans are stored on the phone. Requires iOS 17.0 or later. This file describes version 1.3, the current App Store version.
+
+## Links
+
+- [Product page](https://jtannahill.github.io/sigscan-site/): Features, scan log and privacy summary.
+- [App Store listing](https://apps.apple.com/app/sigscan-signal-radar/id6806315838): Download, version history and requirements.
+- [Privacy policy](https://jamestannahill.com/sigscan/privacy): Full privacy details.
+- [Technical writeup](https://gist.github.com/jtannahill/04f0d1d0067ce8049f0c90c19b9feb3d): Technical overview of the app.
+- [About SigScan](https://jamestannahill.com/ventures/sigscan): Developer page.
+- [Contact](https://jamestannahill.com/contact)
+
+## What it does
+
+- Manufacturer lookup: the complete Bluetooth SIG company registry and the full IEEE hardware registry ship with the app (22,888 manufacturers and 44,975 identifiers), held on the phone and never looked up over the network.
+- Product identification: where a manufacturer publishes how it advertises, SigScan reads the product code from the packet (126 products so far, for example SwitchBot and Xiaomi sensors).
+- Live sensor readings: temperature, humidity, battery, motion and contact state from devices that broadcast them. Nothing is connected to and nothing is requested.
+- Chip maker and brand reported separately, with the evidence behind each identification.
+- AR: Bluetooth devices appear as bubbles in augmented reality. On iPhones with LiDAR, mesh occlusion hides bubbles behind real walls. Wi-Fi, cellular, NFC and HomeKit details are shown in the app, not in AR.
+- Risk flags: known tracker models, unnamed devices broadcasting at high power, hardware that moves with you, and vendors on the FCC Covered List or restricted under Section 889.
+- NFC: reads ISO 7816, ISO 15693 and MIFARE tags and parses NDEF records. Travel documents are recognized without reading the protected data.
+- Wi-Fi: profiles the joined network only (SSID, BSSID, access point vendor, encryption, signal strength, randomized BSSID). iOS does not let any app scan for other Wi-Fi networks.
+- HomeKit: every accessory by room, with manufacturer, model, serial and firmware version.
+- History: every scan is stamped with where it happened, stored on the phone, reviewable on a map, and exportable as CSV.
+- Ask AI: answers questions about nearby devices. Questions go through the developer's server to Anthropic's Claude.
+
+## Privacy
+
+Scans are stored on the phone. SigScan sends scan data only when the user asks a question in Ask AI: the question, a summary of up to 20 devices and the last 30 scan events with device name, time and signal strength. In version 1.3, those events also include the coordinates where they were logged. The request goes through the developer's server to Anthropic's Claude API, is processed to answer the question, and is not stored. No account and no profile. If Ask AI is never used, the app sends none of the user's data.
