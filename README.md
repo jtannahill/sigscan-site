@@ -28,6 +28,8 @@ GitHub Pages serves the repo from `main`. Pushing to `main` publishes the site.
 - `og.png`: 1200x630 social card (ink background, wordmark, hero headline, radar), generated with Pillow from the self-hosted fonts.
 - `fonts/`: self-hosted Latin subsets of Space Grotesk (variable) and IBM Plex Mono 400/500/600, with `fonts/LICENSE` (SIL OFL 1.1).
 - `404.html`: branded not-found page served by GitHub Pages for any missing path.
+- `llms.txt`: plain-text summary for AI answer engines. It repeats the feature and privacy claims, so update it whenever the page copy or the Claims note below changes (including the 1.4 restore steps).
+- `sitemap.xml`: the one canonical URL. The github.io root has no robots.txt, so submit it in Search Console.
 - `DESIGN.md`: colors, type, layout and motion rules. Read it before changing the page: [DESIGN.md](DESIGN.md).
 
 ## Notes
