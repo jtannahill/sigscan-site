@@ -47,6 +47,7 @@ The page describes the App Store version, which is 1.3 as of October 1, 2026. Th
 1. Uncomment the SHARE scan log row (sharing, widget, tab customisation, appearance) and change the section count from `11 events` to `12 events`.
 2. Uncomment the device-class sentences at the end of the TRACE row paragraph.
 3. In the Privacy section, replace "In version 1.3, those events also include the coordinates where they were logged." with "Never your location.", and update the Claims note above.
+4. Add "AirDrop" back to the Apple trademark line in the footer (the SHARE row names it).
 
 ## License
 
